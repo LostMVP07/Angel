@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Angel</title>
     <style>
+        /* Common styles */
         @keyframes colorChange{
             0%{border: solid 5px tomato;}
             20%{border: solid 5px orange;}
@@ -15,13 +16,8 @@
         }
 
         body {
-            
-            display: flex;
-            justify-content: center;
-            align-items: center;
             margin: 0;
             padding: 0;
-            height: 99vh;
             overflow: hidden; /* Prevent vertical scrollbar */
             background-image: url(https://images.unsplash.com/photo-1505322022379-7c3353ee6291?q=80&w=1500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
             background-repeat: no-repeat;
@@ -35,6 +31,7 @@
 
         .container {
             text-align: center;
+            padding-top: 20%;
         }
 
         h1 {
@@ -65,8 +62,9 @@
         /* Input styles */
         .input-container {
             position: absolute;
-            bottom: 20px; /* Adjust distance from the bottom */
-            right: 20px; /* Adjust distance from the right */
+            bottom: 10px; /* Adjust distance from the bottom */
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             align-items: center;
             color: yellow;
@@ -78,19 +76,14 @@
             border-radius: 5px;
             margin-right: 10px;
             margin-bottom: 10px;
+            width: 150px;
         }
 
         input[type="range"] {
             margin-bottom: 10px;
+            width: 100px;
         }
 
-        /* Adjust Enter button location */
-        #enterButton {
-            margin-bottom: 10px;
-            margin-right: 10px;
-        }
-
-        /* Yellow text for "Entered" */
         #enteredText {
             color: yellow;
             opacity: 0;
@@ -98,6 +91,8 @@
             font-size: 14px;
             position: absolute;
             bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         #enteredText.visible {
@@ -117,6 +112,22 @@
             border-radius: 10px;
             display: none;
         }
+
+        @media only screen and (max-width: 768px) {
+            .container {
+                padding-top: 10%;
+            }
+
+            input[type="text"],
+            input[type="range"] {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            #enteredText {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -130,8 +141,10 @@
     <div class="input-container">
         <input type="text" id="textInput" placeholder="Enter text">
         <button id="enterButton" onclick="startFlying()">Enter</button>
+        <br>
         <input type="range" id="speedRange" min="1" max="100" value="0">
         <label for="speedRange">Speed</label>
+        <br>
         <input type="range" id="amountRange" min="1" max="20" value="0">
         <label for="amountRange">Amount</label>
         <div id="enteredText">Entered</div>
