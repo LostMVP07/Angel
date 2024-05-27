@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Gio</title>
+    <style>
+        @keyframes colorChange{
+            0%{border: solid 5px tomato;}
+            20%{border: solid 5px orange;}
+            40%{border: solid 5px yellow;}
+            60%{border: solid 5px green;}
+            80%{border: solid 5px blue;}
+            100%{border: solid 5px purple;}
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 99vh;
+            overflow: hidden; /* Prevent vertical scrollbar */
+            background-image: url(https://images.unsplash.com/photo-1505322022379-7c3353ee6291?q=80&w=1500&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+            background-repeat: no-repeat;
+            background-size: cover;
+            animation-name: colorChange;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+            border-radius: 8px;
+            position: relative; /* Make the body a positioning context for absolute positioning */
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #ff69b4;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #d850a9;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        /* Input styles */
+        .input-container {
+            position: absolute;
+            bottom: 20px; /* Adjust distance from the bottom */
+            right: 20px; /* Adjust distance from the right */
+            display: flex;
+            align-items: center;
+            color: blueviolet;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="range"] {
+            margin-bottom: 10px;
+        }
+
+        /* Adjust Enter button location */
+        #enterButton {
+            margin-bottom: 10px;
+            margin-right: 10px;
+        }
+
+        /* Yellow text for "Entered" */
+        #enteredText {
+            color: yellow;
+            opacity: 0;
+            transition: opacity 0.5s;
+            font-size: 14px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        #enteredText.visible {
+            opacity: 1;
+        }
+
+        /* Alert styles */
+        #alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            border-radius: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1></h1>
+        <button onclick="showMessage()">Click me!</button>
+        <div id="GioRain"></div>
+    </div>
+
+    <!-- Input field and Enter button -->
+    <div class="input-container">
+        <input type="text" id="textInput" placeholder="Enter text">
+        <button id="enterButton" onclick="startFlying()">Enter</button>
+        <input type="range" id="speedRange" min="1" max="100" value="0">
+        <label for="speedRange">Speed</label>
+        <input type="range" id="amountRange" min="1" max="20" value="0">
+        <label for="amountRange">Amount</label>
+        <div id="enteredText">Entered</div>
+    </div>
+
+    <!-- Alert message -->
+    <div id="alert">ANGEL enter the text first or ill bite you huhuhuhuhu</div>
+
+    <script>
+        var enteredText = "";
+
+        function showMessage() {
+            if (!enteredText) {
+                document.getElementById("alert").style.display = "block";
+                setTimeout(function() {
+                    document.getElementById("alert").style.display = "none";
+                }, 2000);
+            } else {
+                var amount = document.getElementById("amountRange").value;
+                for (var i = 0; i < amount; i++) {
+                    createText(enteredText);
+                }
+            }
+        }
+
+        function createGio() {
+            var Gio = document.createElement("span");
+            Gio.className = "Gio";
+            Gio.innerText = "Gio";
+            Gio.style.position = "absolute";
+            Gio.style.left = Math.random() * (window.innerWidth - 100) + "px"; // Random horizontal position
+            Gio.style.top = "-50px"; // Start from top
+            Gio.style.fontSize = "24px";
+            Gio.style.color = getRandomColor(); // Get random color
+            document.getElementById("GioRain").appendChild(Gio);
+            animateGio(Gio);
+        }
+
+        function createText(text) {
+            var newText = document.createElement("span");
+            newText.className = "text";
+            newText.innerText = text;
+            newText.style.position = "absolute";
+            newText.style.left = Math.random() * (window.innerWidth - 100) + "px"; // Random horizontal position
+            newText.style.top = "-50px"; // Start from top
+            newText.style.fontSize = "24px";
+            newText.style.color = getRandomColor(); // Get random color
+            document.getElementById("GioRain").appendChild(newText);
+            animateText(newText);
+        }
+
+        function startFlying() {
+            enteredText = document.getElementById("textInput").value;
+            document.getElementById("enteredText").classList.add("visible");
+            setTimeout(function() {
+                document.getElementById("enteredText").classList.remove("visible");
+            }, 1000);
+        }
+
+        function animateGio(Gio) {
+            var speed = Math.random() * document.getElementById("speedRange").value + 1; // Random speed based on range value
+            var angle = Math.random() * 180 - 90; // Random angle
+            var interval = setInterval(function() {
+                var top = Gio.offsetTop + speed;
+                var left = Gio.offsetLeft + Math.sin(angle * Math.PI / 180) * speed;
+                if (top > window.innerHeight || left < -100 || left > window.innerWidth) {
+                    clearInterval(interval);
+                    Gio.remove();
+                } else {
+                    Gio.style.top = top + "px";
+                    Gio.style.left = left + "px";
+                }
+            }, 25);
+        }
+
+        function animateText(textElement) {
+            var speed = Math.random() * document.getElementById("speedRange").value + 1; // Random speed based on range value
+            var angle = Math.random() * 180 - 90; // Random angle
+            var interval = setInterval(function() {
+                var top = textElement.offsetTop + speed;
+                var left = textElement.offsetLeft + Math.sin(angle * Math.PI / 180) * speed;
+
+                if (top > window.innerHeight || left < -100 || left > window.innerWidth) {
+                    clearInterval(interval);
+                    textElement.remove();
+                } else {
+                    textElement.style.top = top + "px";
+                    textElement.style.left = left + "px";
+                }
+            }, 25);
+        }
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>
